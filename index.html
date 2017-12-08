@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				overflow: hidden;
+			}
+		</style>
+		<script>
+			window.onload = function () 
+			{
+		
+				window.requestAnimationFrame=function(){return window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.msRequestAnimationFrame||window.oRequestAnimationFrame||function(f){window.setTimeout(f,1e3/60)}}();
+
+				var canvas = document.querySelector('canvas');
+				var ctx = canvas.getContext('2d');
+				var W = canvas.width = window.innerWidth;
+				var H = canvas.height = window.innerHeight;
+								
+				var ballVelocityX = 15;
+				var ballVelocityY;
+				
+				var directionx = 1;
+				var directiony = 1;
+				
+				var playerBorder = 10;
+				var playerWidth = 40;
+				var playerHeight = 200;
+				
+				var gameStarted = false;
+				
+				var playerVelocity = 15;
+				var playerVely = 0;
+				
+				var opponentSpeed = 5;
+				
+				var scorePlayer1 = 0;
+				var scorePlayer2 = 0;
+				
+				function Ball() 
+				{
+					this.r = this.radius = 20;
+					this.x = canvas.width / 2;
+					this.y = canvas.height - this.radius;
+					
+					this.draw = function(ctx) {
+						ctx.fillStyle = 'red';
+						ctx.beginPath();
+						
+						ctx.arc(
+							this.x,
+							this.y,
+							this.radius,
+							0,
+							Math.PI*2,
+							false
+						);
+						
+						ctx.closePath();
+						ctx.fill();
+					}
+				}
+				
+				var ball = new Ball();
+				
+				function Player(x, y)
+				{
+					this.x = x;
+					this.y = y;
+					
+					this.w = playerWidth;
+					this.h = playerHeight;
+					
+					this.draw = function(ctx) 
+					{
+						ctx.fillStyle = 'blue';
+						ctx.beginPath();
+						ctx.rect(this.x, this.y, playerWidth, playerHeight);
+						ctx.closePath();
+						ctx.fill();
+					}
+				}
+				
+				var player1 = new Player(playerBorder, canvas.height / 2 - playerHeight/2);
+				var player2 = new Player(canvas.width - playerWidth - playerBorder, canvas.height / 2 - playerHeight / 2);
+				
+				(function renderFrame() {
+					requestAnimationFrame(renderFrame);
+					ctx.clearRect(0, 0, W, H);
+					
+					if(gameStarted)
+					{
+						ball.x += ballVelocityX * directionx;
+						ball.y += ballVelocityY * directiony;
+						
+						if (ball.x + ball.radius > canvas.width) 
+						{
+							ScorePlayer(1);
+						}
+						if (ball.x - ball.radius < 0)
+						{
+							ScorePlayer(2);
+						}
+						if (ball.y + ball.radius > canvas.height || ball.y - ball.radius  < 0) {
+							directiony = -directiony;
+						}
+					
+						ball.draw(ctx);
+					}
+					
+					if(playerVely != 0)
+					{
+						player1.y += playerVely;
+					}
+					
+					if(player1.y + player1.h > canvas.height)
+					{
+						player1.y = canvas.height - player1.h;
+					}
+					if(player1.y < 0)
+					{
+						player1.y = 0;
+					}
+					
+					player1.draw(ctx);
+					
+					if(ball.y + ball.radius > player2.y + player2.h/2)
+					{
+						player2.y += opponentSpeed;
+					}
+					if(ball.y - ball.radius < player2.y)
+					{
+						player2.y -= opponentSpeed;
+					}
+					
+					player2.draw(ctx);
+					
+					var colided = collideTest(ball, player1) || collideTest(ball, player2);
+					if (colided)
+					{
+						directionx = -directionx;
+						if (playerVely > 0)
+						{
+							ballVelocityY -= 2;
+						}
+						if (playerVely < 0)
+						{
+							ballVelocityY += 2;
+						}
+					}
+					
+					ctx.font = '48px serif';
+					ctx.fillText(scorePlayer1, canvas.width / 2 - 50 - 24, 50);
+					ctx.fillText(scorePlayer2, canvas.width / 2 + 50, 50);
+					
+					ctx.beginPath(); 
+					ctx.moveTo(canvas.width/2,0);
+					ctx.lineTo(canvas.width/2,canvas.height);
+					ctx.stroke();
+				}());
+				
+				function ScorePlayer(num)
+				{
+					if(num == 1)
+					{
+						scorePlayer1 += 1;
+					}
+					if(num == 2)
+					{
+						scorePlayer2 += 1;
+					}
+					gameStarted = false;
+				}
+				
+				function StartGame()
+				{
+					gameStarted = true;
+					ball.x = player1.x + player1.w + ball.radius;
+					ball.y = player1.y + player1.h/2;
+					ballVelocityY = getRandom(-10, 10);
+				}
+				
+				function getRandom(min, max) {
+					return Math.random() * (max - min) + min;
+				}
+				
+				function collideTest(circle, rect) {
+					var distX = Math.abs(circle.x - rect.x-rect.w/2);
+					var distY = Math.abs(circle.y - rect.y-rect.h/2);
+
+					if (distX > (rect.w/2 + circle.r)) { return false; }
+					if (distY > (rect.h/2 + circle.r)) { return false; }
+
+					if (distX <= (rect.w/2)) { return true; } 
+					if (distY <= (rect.h/2)) { return true; }
+
+					var dx=distX-rect.w/2;
+					var dy=distY-rect.h/2;
+					return (dx*dx+dy*dy<=(circle.r*circle.r));
+				}
+				
+				document.addEventListener('keydown', (event) => 
+				{
+					const keyName = event.key;
+
+					if (keyName === ' ') {
+						StartGame();
+					}
+					if (keyName === 'w')
+					{
+						playerVely = -playerVelocity;
+					}
+					if (keyName === 's')
+					{
+						playerVely = playerVelocity;
+					}
+				});
+				
+				document.addEventListener('keyup', (event) => 
+				{
+					const keyName = event.key;
+
+					if ((keyName === 'w') || (keyName === 's'))
+					{
+						playerVely = 0;
+					}
+				});
+			};
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+	</body>
+</html>
