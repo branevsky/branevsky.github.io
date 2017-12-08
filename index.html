@@ -40,6 +40,25 @@
 				var scorePlayer1 = 0;
 				var scorePlayer2 = 0;
 				
+				var imageObj = new Image();
+				imageObj.src = 'imgs/gazeus.png';
+				var imageMenu = new Image();
+				imageMenu.src = 'imgs/menu.png';
+				
+				var openMenu = false;
+				
+				canvas.addEventListener("mousedown", doMouseDown, false);
+				function doMouseDown(event)
+				{
+					var posX = event.pageX;
+					var posY = event.pageY;
+					console.log("event = " + event.pageX + " - " + event.pageY);
+					if(posX > 1045 && posX < 1158 && posY > 16 && posY < 51)
+					{
+						openMenu = true;
+					}
+				}
+				
 				function Ball() 
 				{
 					this.r = this.radius = 20;
@@ -86,6 +105,19 @@
 				
 				var player1 = new Player(playerBorder, canvas.height / 2 - playerHeight/2);
 				var player2 = new Player(canvas.width - playerWidth - playerBorder, canvas.height / 2 - playerHeight / 2);
+				
+				function Menu()
+				{
+					this.x = canvas.width/2 - 350;
+					this.y = canvas.height/2 - 250;
+					
+					this.draw = function(ctx) 
+					{
+						ctx.drawImage(imageMenu, canvas.width/2 - imageMenu.width/2, canvas.height/2 - imageMenu.height / 2);
+					}
+				}
+				
+				var menu = new Menu();
 				
 				(function renderFrame() {
 					requestAnimationFrame(renderFrame);
@@ -167,10 +199,21 @@
 					ctx.fillText(scorePlayer1, canvas.width / 2 - 50 - 24, 50);
 					ctx.fillText(scorePlayer2, canvas.width / 2 + 50, 50);
 					
+					ctx.fillText("Menu", canvas.width - 200, 50);
+				
+					//draw water mark
+					//ctx.drawImage(imageObj, canvas.width/2 - imageObj.width/2, canvas.height/2 - imageObj.height / 2);
+					
+					//draw line in the middle
 					ctx.beginPath(); 
 					ctx.moveTo(canvas.width/2,0);
 					ctx.lineTo(canvas.width/2,canvas.height);
-					ctx.stroke();
+					ctx.stroke();		
+					
+					if(openMenu)
+					{
+						menu.draw(ctx);
+					}
 				}());
 				
 				function ScorePlayer(num)
