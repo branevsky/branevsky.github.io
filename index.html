@@ -109,6 +109,17 @@
 						}
 					
 						ball.draw(ctx);
+						
+						
+					
+						if(ball.y + ball.radius > player2.y + player2.h/2)
+						{
+							player2.y += opponentSpeed;
+						}
+						else if(ball.y - ball.radius < player2.y)
+						{
+							player2.y -= opponentSpeed;
+						}
 					}
 					
 					if(playerVely != 0)
@@ -126,15 +137,6 @@
 					}
 					
 					player1.draw(ctx);
-					
-					if(ball.y + ball.radius > player2.y + player2.h/2)
-					{
-						player2.y += opponentSpeed;
-					}
-					if(ball.y - ball.radius < player2.y)
-					{
-						player2.y -= opponentSpeed;
-					}
 					
 					player2.draw(ctx);
 					
