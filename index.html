@@ -120,6 +120,15 @@
 						{
 							player2.y -= opponentSpeed;
 						}
+					
+						if(player2.y + player2.h > canvas.height)
+						{
+							player2.y = canvas.height - player2.h;
+						}
+						if(player2.y < 0)
+						{
+							player2.y = 0;
+						}
 					}
 					
 					if(playerVely != 0)
