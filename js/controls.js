@@ -14,7 +14,7 @@ function doMouseDown(event)
 		CloseMenu();
 		return;
 	}
-	if(deviceTyp == "mobile")
+	if(deviceType == "mobile")
 	{
 		StartGame();
 	}
