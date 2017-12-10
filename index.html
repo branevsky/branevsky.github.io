@@ -25,6 +25,7 @@
 				
 				var directionx = 1;
 				var directiony = 1;
+				var lastPlayerCollided = 0;
 				
 				var playerBorder = 10;
 				var playerWidth = 40;
@@ -42,8 +43,6 @@
 				
 				var imageObj = new Image();
 				imageObj.src = 'imgs/gazeus.png';
-				var imageMenu = new Image();
-				imageMenu.src = 'imgs/menu.png';
 				
 				var openMenu = false;
 				
@@ -53,10 +52,21 @@
 					var posX = event.pageX;
 					var posY = event.pageY;
 					console.log("event = " + event.pageX + " - " + event.pageY);
-					if(posX > 1045 && posX < 1158 && posY > 16 && posY < 51)
+					if(openMenu)
+					{
+						openMenu = false;
+						return;
+					}
+					if(posX > canvas.width - 200 && posX < (canvas.width) && posY > 16 && posY < 51)
 					{
 						openMenu = true;
 					}
+				}
+				window.addEventListener("deviceorientation", handleOrientation, true);
+				function handleOrientation(event) {
+					var y = event.gamma; // In degree in the range [-90,90]
+					y += 90;
+					playerVely = (playerVelocity * y/180);
 				}
 				
 				function Ball() 
@@ -108,12 +118,35 @@
 				
 				function Menu()
 				{
-					this.x = canvas.width/2 - 350;
-					this.y = canvas.height/2 - 250;
+					this.width = 700;
+					this.height = 400;
+					this.x = (canvas.width/2 - this.width/2);
+					this.y = (canvas.height/2 - this.height/2);
 					
 					this.draw = function(ctx) 
 					{
-						ctx.drawImage(imageMenu, canvas.width/2 - imageMenu.width/2, canvas.height/2 - imageMenu.height / 2);
+						ctx.beginPath(); 
+						ctx.lineWidth = 15;
+						ctx.moveTo(this.x,this.y);
+						ctx.lineTo(this.x + this.width, this.y);
+						ctx.lineTo(this.x + this.width, this.y + this.height);
+						ctx.lineTo(this.x, this.y + this.height);
+						ctx.lineTo(this.x,this.y);
+						ctx.stroke();	
+						ctx.fillStyle = 'white';
+						ctx.rect(this.x, this.y, this.width, this.height);
+						ctx.fill();
+						ctx.fillStyle = 'black';
+						ctx.font = '48px serif';
+						ctx.textAlign = 'center';
+						ctx.fillText("Instruções", canvas.width / 2, this.y + 50);
+						ctx.font = '30px serif';
+						ctx.textAlign = 'left';
+						ctx.fillText("Navegador:", this.x + 50, this.y + 120);
+						ctx.font = '20px serif';
+						ctx.fillText("Aperte espaço para começar e as setas para cima e para baixo para jogar.", this.x + 70, this.y + 150);
+						ctx.font = '30px serif';
+						ctx.fillText("Mobile:", this.x + 50, this.y + 200);
 					}
 				}
 				
@@ -123,7 +156,7 @@
 					requestAnimationFrame(renderFrame);
 					ctx.clearRect(0, 0, W, H);
 					
-					if(gameStarted)
+					if(gameStarted && !openMenu)
 					{
 						ball.x += ballVelocityX * directionx;
 						ball.y += ballVelocityY * directiony;
@@ -181,7 +214,9 @@
 					
 					player2.draw(ctx);
 					
-					var colided = collideTest(ball, player1) || collideTest(ball, player2);
+					var testColidePlayer1 = collideTest(ball, player1);
+					var testColidePlayer2 = collideTest(ball, player2);
+					var colided = (testColidePlayer1 && lastPlayerCollided != 1) || (testColidePlayer2 && lastPlayerCollided != 2);
 					if (colided)
 					{
 						directionx = -directionx;
@@ -192,6 +227,14 @@
 						if (playerVely < 0)
 						{
 							ballVelocityY += 2;
+						}
+						if(testColidePlayer1)
+						{
+							lastPlayerCollided = 1;
+						}
+						if(testColidePlayer2)
+						{
+							lastPlayerCollided = 2;
 						}
 					}
 					
@@ -206,6 +249,7 @@
 					
 					//draw line in the middle
 					ctx.beginPath(); 
+					ctx.lineWidth = 2;
 					ctx.moveTo(canvas.width/2,0);
 					ctx.lineTo(canvas.width/2,canvas.height);
 					ctx.stroke();		
@@ -263,11 +307,11 @@
 					if (keyName === ' ') {
 						StartGame();
 					}
-					if (keyName === 'w')
+					if (keyName === 'ArrowUp')
 					{
 						playerVely = -playerVelocity;
 					}
-					if (keyName === 's')
+					if (keyName === 'ArrowDown')
 					{
 						playerVely = playerVelocity;
 					}
@@ -277,7 +321,7 @@
 				{
 					const keyName = event.key;
 
-					if ((keyName === 'w') || (keyName === 's'))
+					if ((keyName === 'ArrowUp') || (keyName === 'ArrowDown'))
 					{
 						playerVely = 0;
 					}
