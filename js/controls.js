@@ -12,6 +12,11 @@ function doMouseDown(event)
 	if(event.target.id.toLowerCase().indexOf("closemenu") != -1)
 	{
 		CloseMenu();
+		return;
+	}
+	if(deviceTyp == "mobile")
+	{
+		StartGame();
 	}
 }
 
