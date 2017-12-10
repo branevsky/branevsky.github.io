@@ -70,11 +70,18 @@
 					}
 				}
 				
-				function handleOrientation(event) {
-					var y = event.beta; // In degree in the range [-90,90]
-					debugText += "beta=" + y + "-";
-					playerVely = (playerVelocity * y/10);
-					debugText += "playerVely=" + playerVely + "-";
+				function handleOrientation(event) 
+				{
+					float val = 0;
+					if(window.innerHeight > window.innerWidth)
+					{
+						val = (playerVelocity * event.beta/10);
+					}
+					else
+					{
+						val = (playerVelocity * event.gamma/5);
+					}
+					playerVely = (playerVelocity * val/10);
 				}
 				window.addEventListener("deviceorientation", handleOrientation);
 				
