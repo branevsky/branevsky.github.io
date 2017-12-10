@@ -9,10 +9,91 @@
 				margin: 0px;
 				overflow: hidden;
 			}
+			#container {
+				position: relative;
+			}
+			#container canvas, #menuOverlay {
+				position: absolute;
+			}
+			#menuOverlay{
+			    position: fixed;
+			    width: 700px;
+			    height: 500px;
+			    top: 50%;
+			    left: 50%;
+			    margin: -250px 0 0 -360px;
+			    border: 10px solid #ccc;
+			    background-color: white;
+				font-color : black;
+				visibility: hidden;
+			}
+			canvas {
+				border: 1px solid black;
+			}
+			.titulo{
+				font-size : 48px;
+				text-align: center;
+				padding-top: 10px;
+			}
+			.contentTitle{
+				font-size : 30px;
+				padding-left: 50px;
+				padding-right: 50px; 
+				word-wrap: break-word;
+   				width: 600px;
+   				padding-top: 60px;
+			}
+			.contentText{
+				font-size : 20px;
+				padding-left: 50px;
+				padding-right: 50px; 
+				word-wrap: break-word;
+   				width: 600px;
+			}
+			.titleNavegador{
+				padding-top : 40px;
+			}
+			.closeMenu{
+				position: absolute;
+			    display: block;
+			    left: 650px;
+			    top: 15px;
+			    font-size: 40px;
+			}
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
+		<div id="container">
+			<canvas id="canvas"></canvas>
+			<div id="menuOverlay">
+				<div class="titulo">
+					Instruções
+				</div>
+				<div class="contentTitle titleNavegador">
+					Navegador:
+				</div>
+				<div class="contentText">
+					<div class="keysForm">
+						<div class="inputForm"><input value="espaço" id="startInput"></input> Tecla para começar o jogo.</div>
+						<div class="inputForm"><input value="ArrowUp" id="upInput"></input> Tecla para subir o player.</div>
+						<div class="inputForm"><input value="ArrowDown" id="downInput"></input> Tecla para descer o player.</div>
+					</div>
+				</div>
+				<div class="contentTitle">
+					Mobile:
+				</div>
+				<div class="contentText">
+					Clique na tela para começar e incline o celular para jogar.
+				</div>
+				<div class="contentTitle">
+					Desenvolvedor:
+				</div>
+				<div class="contentText">
+					Bruno Ranevsky.
+				</div>
+				<div class="closeMenu">X</div>
+			</div>
+		</div>
 	</body>
 	<script type="text/javascript">
 

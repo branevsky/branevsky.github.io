@@ -4,7 +4,7 @@
 	
 	UpdateUI();
 	
-	if(gameStarted && !openMenu)
+	if(gameStarted && !IsMenuOpen())
 	{
 		UpdateBall();	
 	}
@@ -119,12 +119,7 @@ function UpdateUI()
 	ctx.lineWidth = 2;
 	ctx.moveTo(canvas.width/2,0);
 	ctx.lineTo(canvas.width/2,canvas.height);
-	ctx.stroke();		
-	
-	if(openMenu)
-	{
-		menu.draw(ctx);
-	}
+	ctx.stroke();	
 }
 
 function ScorePlayer(num)
@@ -146,4 +141,26 @@ function StartGame()
 	ball.x = player1.x + player1.w + ball.radius;
 	ball.y = player1.y + player1.h/2;
 	ballVelocityY = getRandom(-10, 10);
+}
+
+function OpenMenu()
+{
+	document.getElementById('menuOverlay').style.visibility = 'visible';
+}
+
+function CloseMenu()
+{
+	document.getElementById('menuOverlay').style.visibility = 'hidden';
+}
+
+function IsMenuOpen()
+{
+	if(document.getElementById('menuOverlay').style.visibility == 'visible')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

@@ -29,9 +29,11 @@ var scorePlayer2 = 0;
 var imageObj = new Image();
 imageObj.src = 'imgs/gazeus.png';
 
-var openMenu = false;
-
 var ball = new Ball();
 var player1 = new Player(playerBorder, canvas.height / 2 - playerHeight/2, playerWidth, playerHeight);
 var player2 = new Player(canvas.width - playerWidth - playerBorder, canvas.height / 2 - playerHeight / 2, playerWidth, playerHeight);
 var menu = new Menu();
+
+var startKey = " ";
+var upKey = "ArrowUp";
+var downKey = "ArrowDown";

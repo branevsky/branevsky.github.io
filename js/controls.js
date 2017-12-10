@@ -1,39 +1,55 @@
-canvas.addEventListener("mousedown", doMouseDown, false);
+
+document.addEventListener('mousedown', doMouseDown, false);
 function doMouseDown(event)
 {
 	var posX = event.pageX;
 	var posY = event.pageY;
-	console.log("event = " + event.pageX + " - " + event.pageY);
-	if(openMenu)
-	{
-		openMenu = false;
-		return;
-	}
 	if(posX > canvas.width - 200 && posX < (canvas.width) && posY > 16 && posY < 51)
 	{
-		openMenu = true;
+		OpenMenu();
+		return;
 	}
-	
-	if(deviceType == "mobile")
+	if(event.target.id.toLowerCase().indexOf("input") == -1)
 	{
-		StartGame();
+		CloseMenu();
 	}
 }
+
+document.getElementById("menuOverlay").addEventListener('input', function (evt) {
+	var value = evt.target.value.toLowerCase();
+    var id = evt.target.id;
+    if(id == "startInput")
+    {
+    	if(value == "espaco" || value == "espaço")
+    	{
+    		value = " ";
+    	}
+    	startKey = value;
+    }
+    if(id == "upInput")
+    {
+    	upKey = value;
+    }
+    if(id == "downInput")
+    {
+    	downKey = value;
+    }
+});
 
 if(deviceType == "pc")
 {
 	document.addEventListener('keydown', (event) => 
 	{
-		const keyName = event.key;
+		const keyName = event.key.toLowerCase();
 
-		if (keyName === ' ') {
+		if (keyName === startKey) {
 			StartGame();
 		}
-		if (keyName === 'ArrowUp')
+		if (keyName === upKey)
 		{
 			playerVely = -playerVelocity;
 		}
-		if (keyName === 'ArrowDown')
+		if (keyName === downKey)
 		{
 			playerVely = playerVelocity;
 		}
@@ -41,9 +57,9 @@ if(deviceType == "pc")
 	
 	document.addEventListener('keyup', (event) => 
 	{
-		const keyName = event.key;
+		const keyName = event.key.toLowerCase();
 
-		if ((keyName === 'ArrowUp') || (keyName === 'ArrowDown'))
+		if ((keyName === upKey) || (keyName === downKey))
 		{
 			playerVely = 0;
 		}
