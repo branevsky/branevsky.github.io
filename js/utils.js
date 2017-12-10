@@ -8,11 +8,11 @@ function handleOrientation(event)
 	var val = 0;
 	if(window.innerHeight > window.innerWidth)
 	{
-		val = (playerVelocity * event.beta/10);
+		val = (gameDifficult[gameMode].playerVelocity * event.beta/10);
 	}
 	else
 	{
-		val = (playerVelocity * -event.gamma/5);
+		val = (gameDifficult[gameMode].playerVelocity * -event.gamma/5);
 	}
 	playerVely = val;
 }

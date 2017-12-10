@@ -16,7 +16,7 @@
 
 function UpdateBall()
 {
-	ball.x += ballVelocityX * directionx;
+	ball.x += gameDifficult[gameMode].ballVelocityX * directionx;
 	ball.y += ballVelocityY * directiony;
 	
 	if (ball.x + ball.radius > canvas.width) 
@@ -37,13 +37,24 @@ function UpdateBall()
 	if (colided)
 	{
 		directionx = -directionx;
-		if (playerVely > 0 && testColidePlayer1)
+		if(testColidePlayer1)
 		{
-			ballVelocityY -= 2;
-		}
-		if (playerVely < 0 && testColidePlayer1)
-		{
-			ballVelocityY += 2;
+			if (playerVely > 0 && directiony > 0)
+			{
+				ballVelocityY -= 2;
+			}
+			if (playerVely > 0 && directiony < 0)
+			{
+				ballVelocityY += 2;
+			}
+			if (playerVely < 0 && directiony > 0)
+			{
+				ballVelocityY += 2;
+			}
+			if (playerVely < 0 && directiony < 0)
+			{
+				ballVelocityY -= 2;
+			}
 		}
 		if(testColidePlayer1)
 		{
@@ -83,11 +94,11 @@ function UpdatePlayer2()
 	{
 		if(ball.y + ball.radius > player2.y + player2.h/2)
 		{
-			player2.y += opponentSpeed;
+			player2.y += gameDifficult[gameMode].opponentSpeed;
 		}
 		else if(ball.y - ball.radius < player2.y)
 		{
-			player2.y -= opponentSpeed;
+			player2.y -= gameDifficult[gameMode].opponentSpeed;
 		}
 
 		if(player2.y + player2.h > canvas.height)

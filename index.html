@@ -41,7 +41,7 @@
 				padding-right: 50px; 
 				word-wrap: break-word;
    				width: 600px;
-   				padding-top: 60px;
+   				padding-top: 35px;
 			}
 			.contentText{
 				font-size : 20px;
@@ -51,7 +51,7 @@
    				width: 600px;
 			}
 			.titleNavegador{
-				padding-top : 40px;
+				padding-top : 20px;
 			}
 			.closeMenu{
 				position: absolute;
@@ -59,6 +59,13 @@
 			    left: 650px;
 			    top: 15px;
 			    font-size: 40px;
+			}
+			.radioForm{
+				display: inline;
+				padding-left: 30px;
+			}
+			.first{
+				padding-left : 5px;
 			}
 		</style>
 	</head>
@@ -86,12 +93,20 @@
 					Clique na tela para começar e incline o celular para jogar.
 				</div>
 				<div class="contentTitle">
+					Dificuldade:
+				</div>
+				<div class="contentText">
+					<div class="radioForm first"><input type="radio" name="dificulty" value="0" checked="checked"> Facil</div>
+					<div class="radioForm"><input type="radio" name="dificulty" value="1"> Médio</div>
+					<div class="radioForm"><input type="radio" name="dificulty" value="2"> Dificil</div>
+				</div>
+				<div class="contentTitle">
 					Desenvolvedor:
 				</div>
 				<div class="contentText">
 					Bruno Ranevsky.
 				</div>
-				<div class="closeMenu">X</div>
+				<div class="closeMenu" id="closeMenu">X</div>
 			</div>
 		</div>
 	</body>

@@ -9,13 +9,14 @@ function doMouseDown(event)
 		OpenMenu();
 		return;
 	}
-	if(event.target.id.toLowerCase().indexOf("input") == -1)
+	if(event.target.id.toLowerCase().indexOf("closemenu") != -1)
 	{
 		CloseMenu();
 	}
 }
 
-document.getElementById("menuOverlay").addEventListener('input', function (evt) {
+document.getElementById("menuOverlay").addEventListener('input', InputTextChange, false);
+function InputTextChange (evt) {
 	var value = evt.target.value.toLowerCase();
     var id = evt.target.id;
     if(id == "startInput")
@@ -34,7 +35,17 @@ document.getElementById("menuOverlay").addEventListener('input', function (evt) 
     {
     	downKey = value;
     }
-});
+}
+
+document.getElementById("menuOverlay").addEventListener('mousedown', mouseDownRadioButton, false);
+function mouseDownRadioButton(event)
+{
+	if(event.target.type == "radio")
+	{
+		event.target.checked = true;
+		gameMode = parseInt(event.target.value);
+	}
+}
 
 if(deviceType == "pc")
 {
@@ -47,11 +58,11 @@ if(deviceType == "pc")
 		}
 		if (keyName === upKey)
 		{
-			playerVely = -playerVelocity;
+			playerVely = -gameDifficult[gameMode].playerVelocity;
 		}
 		if (keyName === downKey)
 		{
-			playerVely = playerVelocity;
+			playerVely = gameDifficult[gameMode].playerVelocity;
 		}
 	});
 	
