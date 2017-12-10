@@ -68,6 +68,11 @@
 					{
 						openMenu = true;
 					}
+					
+					if(deviceType == "mobile")
+					{
+						gameStarted = true;
+					}
 				}
 				
 				function handleOrientation(event) 
@@ -324,32 +329,35 @@
 					return (dx*dx+dy*dy<=(circle.r*circle.r));
 				}
 				
-				document.addEventListener('keydown', (event) => 
+				if(deviceType == "pc")
 				{
-					const keyName = event.key;
+					document.addEventListener('keydown', (event) => 
+					{
+						const keyName = event.key;
 
-					if (keyName === ' ') {
-						StartGame();
-					}
-					if (keyName === 'ArrowUp')
+						if (keyName === ' ') {
+							StartGame();
+						}
+						if (keyName === 'ArrowUp')
+						{
+							playerVely = -playerVelocity;
+						}
+						if (keyName === 'ArrowDown')
+						{
+							playerVely = playerVelocity;
+						}
+					});
+					
+					document.addEventListener('keyup', (event) => 
 					{
-						playerVely = -playerVelocity;
-					}
-					if (keyName === 'ArrowDown')
-					{
-						playerVely = playerVelocity;
-					}
-				});
-				
-				document.addEventListener('keyup', (event) => 
-				{
-					const keyName = event.key;
+						const keyName = event.key;
 
-					if ((keyName === 'ArrowUp') || (keyName === 'ArrowDown'))
-					{
-						playerVely = 0;
-					}
-				});
+						if ((keyName === 'ArrowUp') || (keyName === 'ArrowDown'))
+						{
+							playerVely = 0;
+						}
+					});
+				}
 			};
 		</script>
 	</head>
