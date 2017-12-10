@@ -71,14 +71,9 @@
 				}
 				
 				function handleOrientation(event) {
-					var x = event.beta;  // In degree in the range [-180,180]
 					var y = event.gamma; // In degree in the range [-90,90]
-					if (x >  90) { x =  90};
-					if (x < -90) { x = -90};
-					x += 90;
-					y += 90;
 					debugText += "gama=" + y + "-";
-					playerVely = (playerVelocity * y/180);
+					playerVely = (playerVelocity * y/90);
 					debugText += "playerVely=" + playerVely + "-";
 				}
 				window.addEventListener("deviceorientation", handleOrientation);
